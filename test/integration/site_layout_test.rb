@@ -22,8 +22,20 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     log_in_as (@user)
     get users_path
     assert_select "title", full_title("All users")
-    #To be contunie
 
+    assert_select "a[href=?]", user_path(@user.id) # find url for edit current user
+    get user_path @user.id
+    assert_response :success
+    assert_select "title", full_title(@user.name)
+
+    assert_select "a[href=?]", edit_user_path(@user.id) # find url for show current user
+    get edit_user_path @user.id
+    assert_response :success
+    assert_select "title", full_title("Edit user")
+
+    assert_select "a[href=?]", logout_path # find url for destroy current user session
+    delete logout_path
+    assert_not is_logged_in?
   end
 
 end
