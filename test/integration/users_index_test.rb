@@ -3,8 +3,8 @@ require 'test_helper'
 class UsersIndexTest < ActionDispatch::IntegrationTest
 
   def setup
-    @admin     = users(:michael)
-    @non_admin = users(:archer)
+    @admin          = users(:michael)
+    @non_admin      = users(:archer)
   end
 
   test "index as admin including pagination and delete links" do
@@ -29,4 +29,26 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get users_path
     assert_select 'a', text: 'delete', count: 0
   end
+
+  test "not activated user invisible" do
+    post users_path, params: { user: { name: "Not_activated User",
+                                       email:"not_activated@example.com",
+                                       password:              "password",
+                                       password_confirmation: "password" }}
+    @not_activated = assigns(:user)
+    log_in_as(@non_admin)
+    get users_path
+    assert_template 'users/index'
+    assert_select 'div.pagination'
+    for page_num in 1..4
+      in_one_page = User.paginate(page: page_num)
+      in_one_page.each do |user|
+        assert_select "a[href=?]", user_path(@not_activated.id), count: 0
+      end
+    end
+    get user_path(@not_activated.id)
+    follow_redirect!
+    assert_template 'static_page/home'
+  end
+  
 end
