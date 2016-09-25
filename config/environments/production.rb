@@ -60,7 +60,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "sample_app_#{Rails.env}"
     config.action_mailer.raise_delivery_errors = true
     config.action_mailer.delivery_method = :smtp
-    host = '<your heroku app>.herokuapp.com'
+    host = 'agile-chamber-85630.herokuapp.com'
     config.action_mailer.default_url_options = { host: host }
     ActionMailer::Base.smtp_settings = {
       :address        => 'smtp.sendgrid.net',
