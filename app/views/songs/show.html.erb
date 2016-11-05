@@ -1,0 +1,9 @@
+<div class="row">
+      <h3>Songs (<%= Song.count %>)</h3>
+      <section class="song_form">
+        <%= render 'shared/song_form' %>
+      </section>
+      <ol class="microposts">
+        <%= render @songs %>
+      </ol>
+</div>

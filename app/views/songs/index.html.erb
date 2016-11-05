@@ -1,0 +1,26 @@
+<h3>Songs (<%= Song.count %>)</h3>
+<% if !flash[:notice].blank? %>
+   <div class = "alert alert-info">
+      <%= flash[:notice] %>
+   </div>
+<% end %>
+
+<br />
+
+<%= link_to "New Song", new_song_path, class: "btn btn-primary" %>
+<br />
+
+<table class = "table table-bordered table-striped">
+   <tbody>
+      <% @songs.each do |song| %>
+
+         <tr>
+            <td><%= song.artist %></td>
+            <td><%= song.name %></td>
+            <td><%= button_to "Delete",  song, method: :delete, class: "btn btn-danger", confirm: "Are you sure that you wish to delete #{song.name}?" %></td>
+         </tr>
+
+      <% end %>
+   </tbody>
+
+</table>
